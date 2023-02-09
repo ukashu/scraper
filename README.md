@@ -1,0 +1,1 @@
+ścieżka do puppeteera scraper/chromium/chrome/win64-1069273/chrome-win
