@@ -26,7 +26,7 @@ function getScreenshotName(ticker, date) {
 
 function readExcel(path) {
   return new Promise((resolve)=>{
-    // Reading our test file
+    // Reading our excel file
     const file = reader.readFile(`./tables/${path}.xlsx`)
 
     const sheets = file.SheetNames
@@ -46,7 +46,7 @@ function readExcel(path) {
   })
 }
 
-//why are here three functions for the same thing
+//why are here three functions for the same thing TODO
 function waitForInput() {
   return new Promise((resolve) => {
     rl.question('Aby kontynuować wciśnij ENTER, aby zamknąć - CTRL+C ', (answer) => {
@@ -89,7 +89,7 @@ function sleep(ms) {
 }
 
 async function open(index) {
-  console.log(`otwieram: ${data[index].ticker}, date: ${data[index].date}`)
+  console.log(`otwieram: ${data[index].ticker}, data: ${data[index].date}`)
 
   //go to page and wait for it to load
   await Promise.all([page.goto(`https://www.barchart.com/stocks/quotes/${data[index].ticker}/interactive-chart/fullscreen`), page.waitForNavigation()]).catch(err => console.log(err))
@@ -161,8 +161,10 @@ async function main() {
     //sequentially execute for all rows
     for (let i = startIndex; i < data.length; i++) {
       await open(i).catch(err => console.log(err))
+      //wait for user clicking enter to continue in manual mode or on first iteration
       if (mode === 0 || i === startIndex) {
         await waitForInput().catch(err => console.log(err))
+        //on first iteration take screenshot after user clicked enter
         if (i === startIndex) {
           await page.screenshot({ 
             path: `./screenshots/${getScreenshotName(data[startIndex].ticker, data[startIndex].date)}.png`,
