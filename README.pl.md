@@ -1,8 +1,9 @@
+[![eng](https://img.shields.io/badge/lang-eng-blue.svg)](https://github.com/ukashu/scraper/blob/e13b14a647078b818bb848fceace4d39a441d230/README.md)
 # Barchart web scraper
 
 >## Opis
 
-&nbsp;&nbsp;&nbsp;&nbsp;Aplikacja służy do zapisywania wykresów cen akcji ze strony barchart.com. Wczytuje plik excel z danymi spółki oraz datą, wyszukuje wykresy na stronie i zapisuje screenshot'y wykresów w folderze ```./screenshots```.
+&nbsp;&nbsp;&nbsp;&nbsp;Aplikacja służąca do zapisywania wykresów cen akcji ze strony barchart.com. Wczytuje plik excel z danymi spółki oraz datą, wyszukuje wykresy na stronie i zapisuje screenshot'y wykresów w folderze ```./screenshots```.
 
 >## Stack technologiczny
 

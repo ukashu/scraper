@@ -1,4 +1,5 @@
-# Barchart web scraper
+[![pl](https://img.shields.io/badge/lang-pl-blue.svg)](https://github.com/ukashu/scraper/blob/e13b14a647078b818bb848fceace4d39a441d230/README.pl.md)
+# Barchart web scraper 
 
 >## Description
 
