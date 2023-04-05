@@ -3,7 +3,7 @@
 
 >## Opis
 
-&nbsp;&nbsp;&nbsp;&nbsp;Aplikacja służąca do zapisywania wykresów cen akcji ze strony barchart.com. Wczytuje plik excel z danymi spółki oraz datą, wyszukuje wykresy na stronie i zapisuje screenshot'y wykresów w folderze ```./screenshots```.
+&nbsp;&nbsp;&nbsp;&nbsp;Aplikacja służąca do zapisywania wykresów cen akcji ze strony barchart.com. Wczytuje plik excel z danymi spółki oraz datą, wyszukuje wykresy na stronie i zapisuje zrzuty ekranu z wykresami w folderze ```./screenshots```.
 
 >## Stack technologiczny
 
