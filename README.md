@@ -22,6 +22,10 @@
 
 1. Run  ```npm install```. This will install all required node dependencies. 
 
-2. Insert an excel file with columns "ticker" (e.g. "AMZN" for Amazon.com Inc) and "DateTime" (format: YYYY-MM-DD) into ```./tables``` directory.
+2. In the main directory, create folders ```screenshots``` and ```tables```.
 
-3. Run ```node scraper``` and follow the prompts.
+3. Insert an excel file with columns "ticker" (e.g. "AMZN" for Amazon.com Inc) and "DateTime" (format: YYYY-MM-DD) into ```./tables``` directory.
+
+4. Run ```node scraper``` and follow the prompts.
+
+5. Screenshots should be saved in the ```./screenshots``` folder.

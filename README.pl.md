@@ -22,6 +22,10 @@
 
 1. Uruchom skrypt  ```npm install```. Zainstaluje on wszystkie zależności projektu. 
 
-2. Przenieś plik excel z kolumnami "ticker" (np. "AMZN" czyli Amazon.com Inc) i "DateTime" (format: RRRR-MM-DD) do folderu ```./tables```.
+2. Utwórz w głównym folderze projektu foldery ```screenshots``` i ```tables```.
 
-3. Uruchom skrypt ```node scraper``` i postępuj zgodnie z poleceniami.
+3. Przenieś plik excel z kolumnami "ticker" (np. "AMZN" czyli Amazon.com Inc) i "DateTime" (format: RRRR-MM-DD) do folderu ```./tables```.
+
+4. Uruchom skrypt ```node scraper``` i postępuj zgodnie z poleceniami.
+
+5. Zrzuty ekranu są zapisane w folderze ```./screenshots```.
