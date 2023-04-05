@@ -9,8 +9,21 @@ const rl = readline.createInterface({ input, output });
 let fileName = 'placeholder'
 let startIndex = 0
 let mode
+let range
   
 let data = []
+
+function getDateFiveDaysBack(date) {
+  let lessThanFiveDays = 422000000
+  date = new Date(date)
+  let milliseconds = date.getTime() - lessThanFiveDays
+  let newDate = new Date(milliseconds)
+  newDate = newDate.toISOString().split('T')
+  newDate = newDate[0]
+  newDate = newDate.split('-')
+  newDate = `${newDate[1]}/${newDate[2]}/${newDate[0]}`
+  return newDate
+}
 
 function getScreenshotName(ticker, date) {
   let today = new Date(Date.now())
@@ -84,6 +97,17 @@ function waitForMode() {
   })
 }
 
+function waitForRange() {
+  return new Promise((resolve) => {
+    rl.question('Wybierz zakres - 0.jeden dzień 1.pięć dni kalendarzowych: ', (answer) => {
+      if (answer != '1') {
+        range = false
+      } else { range = true}
+      resolve()
+    });
+  })
+}
+
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -126,14 +150,20 @@ async function open(index) {
   for (let i = 0; i < 10; i++) {
     await page.keyboard.press('Backspace');
   }
-  await page.keyboard.type(`${data[index].date}`)
+  //7 day range or 1 day
+  if (range === false) {
+    await page.keyboard.type(`${data[index].date}`)
+  } else {
+    await page.keyboard.type(getDateFiveDaysBack(data[index].date))
+  }
   await page.focus('input[data-ng-model="selectedAggregation.range.to"]')
   await page.keyboard.type(`${data[index].date}`)
   await page.$eval('button[class="bc-button light-blue"]', element => element.click())
 
   await sleep(1000)
 
-  await page.mouse.move(450, 350)
+  //move mouse pointer so that date is shown on screen
+  await page.mouse.move(400, 350)
 
   //take screenshot
   await page.screenshot({ 
@@ -148,6 +178,7 @@ async function main() {
   await waitForFileName()
   await waitForIndex()
   await waitForMode() 
+  await waitForRange()
   await readExcel(fileName).catch(err => {console.log(err)})
   try {
     browser = await puppeteer.launch({
