@@ -1,41 +1,17 @@
 const puppeteer = require('puppeteer')
-const readline = require('readline');
 const reader = require('xlsx');
 
-const { stdin: input, stdout: output } = require('process');
-
-const rl = readline.createInterface({ input, output });
-
+const { waitForInput, waitForFileName, waitForIndex, waitForMode, waitForRange, closeRL } = require('./helpers/inputHelpers.js')
+const { getDateFiveDaysBack } = require('./helpers/dateHelpers.js')
+const { getScreenshotName } = require('./helpers/nameHelpers.js')
+const { sleep } = require('./helpers/sleepUtil.js')
+  
 let fileName = 'placeholder'
 let startIndex = 0
 let mode
 let range
-  
+
 let data = []
-
-function getDateFiveDaysBack(date) {
-  let lessThanFiveDays = 422000000
-  date = new Date(date)
-  let milliseconds = date.getTime() - lessThanFiveDays
-  let newDate = new Date(milliseconds)
-  newDate = newDate.toISOString().split('T')
-  newDate = newDate[0]
-  newDate = newDate.split('-')
-  newDate = `${newDate[1]}/${newDate[2]}/${newDate[0]}`
-  return newDate
-}
-
-function getScreenshotName(ticker, date) {
-  let today = new Date(Date.now())
-  let timeStamp = today.toISOString().split('T')[0]
-  timeStamp = timeStamp.replace(/-/g, '')
-  const hours = `${today.getHours()}`.padStart(2, "0")
-  const minutes = `${today.getMinutes()}`.padStart(2, "0")
-  const seconds = `${today.getSeconds()}`.padStart(2, "0")
-  const formattedDate = date.replace(/\//g, '')
-  timeStamp = `${timeStamp}-${hours}${minutes}${seconds}-${ticker}-${formattedDate}`
-  return timeStamp
-}
 
 function readExcel(path) {
   return new Promise((resolve)=>{
@@ -57,59 +33,6 @@ function readExcel(path) {
     console.log(data)
     resolve()
   })
-}
-
-//why are here three functions for the same thing TODO
-function waitForInput() {
-  return new Promise((resolve) => {
-    rl.question('Aby kontynuować wciśnij ENTER, aby zamknąć - CTRL+C ', (answer) => {
-      resolve()
-    });
-  })
-}
-
-function waitForFileName() {
-  return new Promise((resolve) => {
-    rl.question('Wpisz nazwę pliku (bez rozszerzenia): ', (answer) => {
-      fileName = answer
-      resolve()
-    });
-  })
-}
-
-function waitForIndex() {
-  return new Promise((resolve) => {
-    rl.question('Wpisz indeks początkowy (od 1): ', (answer) => {
-      if (answer > 0) {startIndex = answer - 1}
-      resolve()
-    });
-  })
-}
-
-function waitForMode() {
-  return new Promise((resolve) => {
-    rl.question('Wybierz wariant - 0.manualny 1.automatyczny: ', (answer) => {
-      if (answer != '0') {
-        mode = 1
-      } else { mode = 0}
-      resolve()
-    });
-  })
-}
-
-function waitForRange() {
-  return new Promise((resolve) => {
-    rl.question('Wybierz zakres - 0.jeden dzień 1.pięć dni kalendarzowych: ', (answer) => {
-      if (answer != '1') {
-        range = false
-      } else { range = true}
-      resolve()
-    });
-  })
-}
-
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 async function open(index) {
@@ -175,10 +98,10 @@ async function open(index) {
 }
 
 async function main() {
-  await waitForFileName()
-  await waitForIndex()
-  await waitForMode() 
-  await waitForRange()
+  fileName = await waitForFileName()
+  startIndex = await waitForIndex()
+  mode = await waitForMode() 
+  range = await waitForRange()
   await readExcel(fileName).catch(err => {console.log(err)})
   try {
     browser = await puppeteer.launch({
@@ -205,7 +128,8 @@ async function main() {
       }
     }
   } catch(err) {console.log(err)}
-  rl.close();
+  closeRL()
+  process.exit()
 }
 
 let browser, page
